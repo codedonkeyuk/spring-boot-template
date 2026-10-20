@@ -14,3 +14,5 @@ It has its own docker service to test live deploy.
 | `./gradlew clean`      | Deletes the entire build/ directory to force a completely fresh re-compilation of your source code.                |
 | `docker compose up -d` | Start headless docker container.                                                                                   |
 | `docker compose down`. | stop docker                                                                                                        |
+
+end
