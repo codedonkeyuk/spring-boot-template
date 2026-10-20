@@ -7,6 +7,11 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
+tasks.register('installGitHooks', Exec) {
+    description = 'Configures local git hooks from the repository.'
+    commandLine 'git', 'config', 'core.hooksPath', '.githooks'
+}
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
@@ -25,4 +30,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('compileJava') {
+    dependsOn 'installGitHooks'
 }

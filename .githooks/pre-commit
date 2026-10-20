@@ -1,0 +1,3 @@
+# Run all unit tests. If any fail, the commit stops completely!
+
+./gradlew test
