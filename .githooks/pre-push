@@ -1,0 +1,22 @@
+#!/bin/sh
+
+LOCAL_BRANCH=$(git symbolic-ref --short HEAD)
+
+if ! git rev-parse --verify origin/"$LOCAL_BRANCH" >/dev/null 2>&1; then
+    echo "=== Initial push detected. Skipping version change check ==="
+    exit 0
+fi
+
+echo "=== Running Pre-Push Guardrails ==="
+
+VERSION_CHANGED=$(git diff origin/"$LOCAL_BRANCH"..HEAD -- build.gradle | grep '^[+-].*version\s*=')
+
+if [ -z "$VERSION_CHANGED" ]; then
+    echo "❌ PUSH ABORTED: You must update the project version in 'build.gradle' before pushing!"
+    echo "Current line: $(grep 'version\s*=' build.gradle)"
+    exit 1
+else
+    echo "✅ Version change detected. Proceeding with full check and push..."
+
+    ./gradlew check
+fi
